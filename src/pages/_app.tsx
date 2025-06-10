@@ -1,6 +1,13 @@
 import "@/styles/globals.css"; // Seus estilos globais CSS
 import type { AppProps } from "next/app";
 import { AuthProvider } from '../contexts/AuthContext'; // Importe o AuthProvider
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: 'Roboto', sans-serif;
+  }
+`;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
