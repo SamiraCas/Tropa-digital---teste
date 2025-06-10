@@ -1,18 +1,22 @@
-import "@/styles/globals.css"; // Seus estilos globais CSS
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { AuthProvider } from '../contexts/AuthContext'; // Importe o AuthProvider
+import { AuthProvider } from '../contexts/AuthContext';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 `;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider> {/* <--- Envolve toda a aplicação com AuthProvider */}
-      <Component {...pageProps} /> {/* <--- A página atual é renderizada aqui */}
+    <AuthProvider>
+      <GlobalStyle /> {/* 👈 Aqui você está aplicando os estilos globais */}
+      <Component {...pageProps} />
     </AuthProvider>
   );
 }

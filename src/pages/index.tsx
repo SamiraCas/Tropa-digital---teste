@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
-import Head from 'next/head';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 // Fonte global Roboto
 const GlobalStyle = createGlobalStyle`
