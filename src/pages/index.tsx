@@ -5,7 +5,6 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-// Fonte global Roboto
 const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Roboto', sans-serif;
@@ -34,9 +33,7 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Login bem-sucedido!');
-        console.log(data.token);
-        // Redireciona para dashboard (ou qualquer página)
+        localStorage.setItem('token', data.token);
         router.push('/dashboard');
       } else {
         alert(data.message);
@@ -53,7 +50,6 @@ export default function LoginPage() {
 
       <LoginPageContainer>
         <LoginCard>
-          {/* Coloque o handleLogin no onSubmit do form */}
           <LeftContent onSubmit={handleLogin}>
             <LogoWrapper>
               <Image
@@ -131,9 +127,6 @@ export default function LoginPage() {
   );
 }
 
-
-// Styled Components
-
 const LoginPageContainer = styled.div`
   display: flex;
   align-items: center;
@@ -172,7 +165,6 @@ const LeftContent = styled.form`
   }
 `;
 
-
 const RightContent = styled.div`
   flex: 1;
   background: #cc5a2e;
@@ -202,7 +194,7 @@ const LogoWrapper = styled.div`
 const TitleGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px; /* controla o espaço entre título e subtítulo */
+  gap: 2px;
 `;
 
 const Title = styled.h2`
@@ -244,18 +236,19 @@ const InputField = styled.input`
   background: #f2f2f2;
   font-size: 14px;
   margin-top: 4px;
-  color: #b54e1c; /* Cor do texto digitado */
+  color: #b54e1c;
 
   &::placeholder {
-    color: #657593; /* Cor do placeholder */
-    opacity: 1; /* Garante visibilidade total */
+    color: #657593;
+    opacity: 1;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(181, 78, 28, 0.2); /* Opcional: efeito ao focar */
+    box-shadow: 0 0 0 2px rgba(181, 78, 28, 0.2);
   }
 `;
+
 const EyeIconButton = styled.button`
   position: absolute;
   right: 16px;
