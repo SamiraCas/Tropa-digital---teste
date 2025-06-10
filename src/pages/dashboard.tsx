@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useRouter } from 'next/router'; // <-- ESTE É O CORRETO PARA PAGES ROUTER
+import { useAuth } from '../contexts/AuthContext'; // <-- ESTE É O CAMINHO CORRETO PARA CONTEXTS
 
 export default function Dashboard() {
   return (
