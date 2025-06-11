@@ -12,28 +12,30 @@ export default function Dashboard() {
   return (
     <Wrapper>
       <Sidebar open={sidebarOpen}>
-        <Logo onClick={() => setSidebarOpen(!sidebarOpen)} title="Abrir/Fechar menu" open={sidebarOpen}>
-          <img src="/imagens/Clip path group.png" alt="Logo" />
-        </Logo>
+        <TopSection>
+          <Logo onClick={() => setSidebarOpen(!sidebarOpen)} title="Abrir/Fechar menu" open={sidebarOpen}>
+            <img src="/imagens/Clip path group.png" alt="Logo" />
+          </Logo>
 
-        <Menu>
-          <MenuItem active={true} open={sidebarOpen}>
-            <FiGrid />
-            <span>Dashboard</span>
-          </MenuItem>
-          <MenuItem open={sidebarOpen}>
-            <FiEdit />
-            <span>Eventos</span>
-          </MenuItem>
-          <MenuItem open={sidebarOpen}>
-            <FiUsers />
-            <span>Equipes</span>
-          </MenuItem>
-          <MenuItem open={sidebarOpen}>
-            <FiSettings />
-            <span>Inscrições</span>
-          </MenuItem>
-        </Menu>
+          <Menu>
+            <MenuItem open={sidebarOpen}>
+              <FiGrid />
+              <span>Dashboard</span>
+            </MenuItem>
+            <MenuItem open={sidebarOpen}>
+              <FiEdit />
+              <span>Eventos</span>
+            </MenuItem>
+            <MenuItem active={true} open={sidebarOpen}>
+              <FiUsers />
+              <span>Equipes</span>
+            </MenuItem>
+            <MenuItem open={sidebarOpen}>
+              <FiSettings />
+              <span>Inscrições</span>
+            </MenuItem>
+          </Menu>
+        </TopSection>
 
         <UserInfo open={sidebarOpen}>
           <img src="/imagens/Frame 43.png" alt="Kaique Steck" />
@@ -116,16 +118,21 @@ const Sidebar = styled.aside<{ open: boolean }>`
   overflow: hidden;
 `;
 
+const TopSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Logo = styled.div<{ open: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-bottom: 2rem;
+  margin-bottom: 30px;
   width: 100%;
   min-width: 180px;
 
   img {
-    width: 180px; /* tamanho fixo para a logo ficar inteira */
+    width: 180px;
     height: auto;
     user-select: none;
     pointer-events: none;
@@ -152,7 +159,7 @@ const MenuItem = styled.li<ActiveProps & { open: boolean }>`
   transition: background 0.3s ease;
 
   svg {
-    width: 20px;     /* tamanho fixo dos ícones */
+    width: 20px;
     height: 20px;
     flex-shrink: 0;
   }
