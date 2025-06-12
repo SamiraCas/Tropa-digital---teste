@@ -14,8 +14,9 @@ interface Event {
 }
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const router = useRouter();
+  
 
   // Lista original de eventos
   const [events] = useState<Event[]>([
@@ -114,7 +115,7 @@ export default function Dashboard() {
         </UserInfo>
       </Sidebar>
 
-      <Main>
+      <Main open={sidebarOpen}>
   {/* Título fora do retângulo */}
   <div style={{ marginBottom: '0.5rem' }}>
     <span>
@@ -224,6 +225,10 @@ const Wrapper = styled.div`
   display: flex;
   height: 100vh;
   font-family: sans-serif;
+
+    @media (max-width: 768px) {
+    position: relative;
+  }
 `;
 
 const Sidebar = styled.aside<{ open: boolean }>`
@@ -236,6 +241,16 @@ const Sidebar = styled.aside<{ open: boolean }>`
   border-right: 1px solid #ddd;
   transition: width 0.3s ease;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: ${({ open }) => (open ? '260px' : '68px')};
+    box-shadow: ${({ open }) => (open ? '2px 0 5px rgba(0,0,0,0.1)' : 'none')};
+  }
 `;
 
 const TopSection = styled.div`
@@ -352,12 +367,20 @@ const UserLinks = styled.div`
   }
 `;
 
-const Main = styled.main`
+interface MainProps {
+  open: boolean;
+}
+const Main = styled.main<MainProps>`
   flex: 1;
   padding: 2rem;
   background: #fafafa;
-`;
+  transition: filter 0.3s ease;
+  
 
+  @media (max-width: 768px) {
+    margin-left: ${({ open }) => (open ? '260px' : '68px')};
+  }
+`;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
