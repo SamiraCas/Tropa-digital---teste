@@ -6,9 +6,40 @@ interface ActiveProps {
   active?: boolean;
 }
 
+interface Event {
+  nome: string;
+  totalEquipes: number;
+  status: string;
+  data: string;
+}
+
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
+
+  // Lista original de eventos
+  const [events] = useState<Event[]>([
+    {
+      nome: 'Clube do Laço Coração Pantaneiro',
+      totalEquipes: 10,
+      status: 'Ativo',
+      data: '09 a 11 de Junho',
+    },
+    {
+      nome: 'Festa Junina Campo Alegre',
+      totalEquipes: 5,
+      status: 'Ativo',
+      data: '20 a 22 de Junho',
+    },
+    {
+      nome: 'Festival da Cultura',
+      totalEquipes: 8,
+      status: 'Inativo',
+      data: '15 a 17 de Julho',
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const menuItems = [
     { label: 'Dashboard', icon: '/icons/dashboard.svg' },
@@ -17,13 +48,18 @@ export default function Dashboard() {
     { label: 'Inscrições', icon: '/icons/settings.svg' },
   ];
 
+  // Filtra os eventos pelo nome conforme o termo de busca
+  const filteredEvents = events.filter((event) =>
+    event.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Wrapper>
       <Sidebar open={sidebarOpen}>
         <TopSection>
           <Logo
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            title="Abrir/Fechar menu"
+            title={sidebarOpen ? 'Fechar menu' : 'Abrir menu'}
             open={sidebarOpen}
           >
             <img src="/imagens/Clip path group.png" alt="Logo" />
@@ -40,62 +76,60 @@ export default function Dashboard() {
         </TopSection>
 
         <UserInfo open={sidebarOpen}>
-  <img src="/imagens/Frame 43.png" alt="Kaique Steck" />
-  {sidebarOpen && (
-    <UserContent>
-      <UserDetails>
-        <strong>Kaique Steck</strong>
-        <span>Administrador</span>
-      </UserDetails>
+          <img src="/imagens/Frame 43.png" alt="Kaique Steck" />
+          {sidebarOpen && (
+            <UserContent>
+              <UserDetails>
+                <strong>Kaique Steck</strong>
+                <span>Administrador</span>
+              </UserDetails>
 
-      <UserLinks>
-        <a href="#" style={{ color: '#252525' }}>
-          <IconImg
-            src="/icons/dados.svg"
-            alt="Alterar dados"
-            style={{ width: '18px', height: '18px', marginRight: '0.4rem', verticalAlign: 'middle' }}
-          />
-          Alterar dados
-        </a>
-        <a
-  href="#"
-  onClick={(e) => {
-    e.preventDefault();
-    router.push('/');
-  }}
-  style={{ color: '#252525' }}
->
-  <IconImg
-    src="/icons/logout.svg"
-    alt="Sair"
-    style={{
-      width: '16px',
-      height: '16px',
-      marginRight: '0.4rem',
-      verticalAlign: 'middle',
-    }}
-  />
-  Sair
-</a>
-      </UserLinks>
-    </UserContent>
-  )}
-</UserInfo>
-
+              <UserLinks>
+                <a href="#" style={{ color: '#252525' }}>
+                  <IconImg
+                    src="/icons/dados.svg"
+                    alt="Alterar dados"
+                    style={{ width: '18px', height: '18px', marginRight: '0.4rem', verticalAlign: 'middle' }}
+                  />
+                  Alterar dados
+                </a>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/');
+                  }}
+                  style={{ color: '#252525' }}
+                >
+                  <IconImg
+                    src="/icons/logout.svg"
+                    alt="Sair"
+                    style={{ width: '16px', height: '16px', marginRight: '0.4rem', verticalAlign: 'middle' }}
+                  />
+                  Sair
+                </a>
+              </UserLinks>
+            </UserContent>
+          )}
+        </UserInfo>
       </Sidebar>
 
       <Main>
         <Header>
           <h1>Todos eventos</h1>
           <SearchWrapper>
-        <SearchInputWrapper>
-  <img src="/icons/search.svg" alt="Buscar" />
-  <input placeholder="Buscar eventos" />
-</SearchInputWrapper>
+            <SearchInputWrapper>
+              <img src="/icons/search.svg" alt="Buscar" />
+              <input
+                placeholder="Buscar eventos"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </SearchInputWrapper>
             <button>
-  <img src="/icons/plus.svg" alt="Inserir" className="icon" />
-  Inserir novo
-</button>
+              <img src="/icons/plus.svg" alt="Inserir" className="icon" />
+              Inserir novo
+            </button>
           </SearchWrapper>
         </Header>
 
@@ -109,22 +143,29 @@ export default function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Clube do Laço Coração Pantaneiro</td>
-              <td>10</td>
-              <td>
-                <StatusDot /> Ativo
-              </td>
-              <td>09 a 11 de Junho</td>
-            </tr>
-            <tr>
-              <td>Clube do Laço Coração Pantaneiro</td>
-              <td>10</td>
-              <td>
-                <StatusDot /> Ativo
-              </td>
-              <td>09 a 11 de Junho</td>
-            </tr>
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((event, index) => (
+                <tr key={index}>
+                  <td>{event.nome}</td>
+                  <td>{event.totalEquipes}</td>
+                  <td>
+                    <StatusDot
+                      style={{
+                        backgroundColor: event.status.toLowerCase() === 'ativo' ? '#4DEF00' : '#FF6347',
+                      }}
+                    />{' '}
+                    {event.status}
+                  </td>
+                  <td>{event.data}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4} style={{ textAlign: 'center', padding: '2rem' }}>
+                  Nenhum evento encontrado.
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
 
@@ -140,6 +181,7 @@ export default function Dashboard() {
   );
 }
 
+
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -152,7 +194,7 @@ const Sidebar = styled.aside<{ open: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem 25px; /* laterais com 25px */
+  padding: 2rem 25px;
   border-right: 1px solid #ddd;
   transition: width 0.3s ease;
   overflow: hidden;
@@ -230,11 +272,11 @@ const UserInfo = styled.div<{ open: boolean }>`
     transition: width 0.3s ease, height 0.3s ease;
   }
 `;
+
 const UserContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 
 const UserDetails = styled.div`
   display: flex;
@@ -243,7 +285,7 @@ const UserDetails = styled.div`
   strong {
     font-weight: bold;
     font-size: 1rem;
-    white-space: nowrap; 
+    white-space: nowrap;
   }
 
   span {
@@ -256,7 +298,7 @@ const UserDetails = styled.div`
 const UserLinks = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 56px; 
+  margin-top: 56px;
 
   a {
     font-size: 15px;
@@ -266,9 +308,9 @@ const UserLinks = styled.div`
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    font-family: 'Roboto', sans-serif;   
-    font-weight: 500;                    
-    padding-left: 0; 
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    padding-left: 0;
   }
 `;
 
@@ -309,13 +351,13 @@ const SearchWrapper = styled.div`
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Espaço entre o ícone e o texto */
+    gap: 0.5rem;
 
-  img.icon {
-    width: 16px;
-    height: 16px;
+    img.icon {
+      width: 16px;
+      height: 16px;
+    }
   }
-}
 `;
 
 const Table = styled.table`
@@ -351,7 +393,7 @@ const NavButton = styled.button`
   color: #fff;
   border: none;
   padding: 0.5rem 0.75rem;
-  border-radius:  20px;
+  border-radius: 20px;
   cursor: pointer;
 `;
 
@@ -368,15 +410,15 @@ const SearchInputWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #F6F6F6;
+  background: #f6f6f6;
   border: 1px solid #ccc;
   border-radius: 20px;
-  padding: 0.1rem 0.2rem;
+  padding: 0.4rem 1rem;
+  width: 300px; /* largura mínima garantida */
 
   img {
     width: 18px;
     height: 18px;
-    margin-left: 10px;
   }
 
   input {
@@ -384,7 +426,10 @@ const SearchInputWrapper = styled.div`
     outline: none;
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
-    width: 100%;
     background: transparent;
+    flex: 1;
+    min-width: 0; /* previne bug de largura em flex */
+    color: #333;
   }
 `;
+
