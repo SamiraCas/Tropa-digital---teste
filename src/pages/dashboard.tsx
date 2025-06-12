@@ -115,68 +115,106 @@ export default function Dashboard() {
       </Sidebar>
 
       <Main>
-        <Header>
-          <h1>Todos eventos</h1>
-          <SearchWrapper>
-            <SearchInputWrapper>
-              <img src="/icons/search.svg" alt="Buscar" />
-              <input
-                placeholder="Buscar eventos"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </SearchInputWrapper>
-            <button>
-              <img src="/icons/plus.svg" alt="Inserir" className="icon" />
-              Inserir novo
-            </button>
-          </SearchWrapper>
-        </Header>
+  {/* Título fora do retângulo */}
+  <div style={{ marginBottom: '0.5rem' }}>
+    <span>
+      Bem vindo de volta, <strong>Kaique Steck</strong>
+    </span>
+  </div>
 
-        <Table>
-          <thead>
-            <tr>
-              <th>Nome do evento</th>
-              <th>Total de equipes</th>
-              <th>Status</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEvents.length > 0 ? (
-              filteredEvents.map((event, index) => (
-                <tr key={index}>
-                  <td>{event.nome}</td>
-                  <td>{event.totalEquipes}</td>
-                  <td>
-                    <StatusDot
-                      style={{
-                        backgroundColor: event.status.toLowerCase() === 'ativo' ? '#4DEF00' : '#FF6347',
-                      }}
-                    />{' '}
-                    {event.status}
-                  </td>
-                  <td>{event.data}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4} style={{ textAlign: 'center', padding: '2rem' }}>
-                  Nenhum evento encontrado.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
+  <h1
+  style={{
+    color: '#D36F4A',
+    marginBottom: '1rem',
+    marginTop: '13px',
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: 700,
+    fontSize: '20px',
+    lineHeight: '23px',
+    letterSpacing: '0',
+  }}
+>
+  Todos eventos
+</h1>
+  <div
+    style={{
+      background: '#fff',
+      padding: '1.5rem',
+      borderRadius: '10px',
+      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
+      border: '1px solid #09428F2B',
+    }}
+  >
+    <Header>
+      <SearchWrapper>
+        <SearchInputWrapper>
+          <img src="/icons/search.svg" alt="Buscar" />
+          <input
+            placeholder="Buscar eventos"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </SearchInputWrapper>
+        <button>
+          <img src="/icons/plus.svg" alt="Inserir" className="icon" />
+          Inserir novo
+        </button>
+      </SearchWrapper>
+    </Header>
 
-        <Pagination>
-          <NavButton>Anterior</NavButton>
-          <PageNumber active={true}>1</PageNumber>
-          <PageNumber>2</PageNumber>
-          <PageNumber>3</PageNumber>
-          <NavButton>Próxima</NavButton>
-        </Pagination>
-      </Main>
+    <Table>
+      <thead>
+        <tr>
+          <th>Nome do evento</th>
+          <th>Total de equipes</th>
+          <th>Status</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+  {filteredEvents.length > 0 ? (
+    filteredEvents.map((event, index) => (
+      <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
+        <td>{event.nome}</td>
+        <td>{event.totalEquipes}</td>
+        <td>
+          <StatusDot
+            style={{
+              backgroundColor:
+                event.status.toLowerCase() === 'ativo' ? '#4DEF00' : '#FF6347',
+            }}
+          />{' '}
+          {event.status}
+        </td>
+        <td>{event.data}</td>
+        <DotsCell>
+          <DotsContainer>
+            <Dot />
+            <Dot />
+            <Dot />
+          </DotsContainer>
+        </DotsCell>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+        Nenhum evento encontrado.
+      </td>
+    </tr>
+  )}
+</tbody>
+
+    </Table>
+  <Pagination>
+  <NavButton variant="previous">Anterior</NavButton>
+  <PageNumber active={true}>1</PageNumber>
+  <PageNumber>2</PageNumber>
+  <PageNumber>3</PageNumber>
+  <NavButton>Próxima</NavButton>
+</Pagination>
+  </div>
+</Main>
     </Wrapper>
   );
 }
@@ -335,11 +373,14 @@ const Header = styled.div`
 const SearchWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end; /* alinhamento à direita */
+  width: 100%; /* para ocupar toda a largura do container */
 
   input {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     border: 1px solid #ccc;
+    
   }
 
   button {
@@ -364,11 +405,25 @@ const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-  th,
+    th {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-family: 'Poppins', sans-serif; /* 👈 Aqui aplica a Poppins */
+    font-weight: 600;
+    color: #333;
+    font-weight: 500;
+  font-size: 13px;
+  color: #CC623780;
+  }
+
   td {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #eee;
+    font-weight: 500;
+    font-size: 13px;
+    color: #657593;
   }
 `;
 
@@ -388,22 +443,40 @@ const Pagination = styled.div`
   justify-content: flex-end;
 `;
 
-const NavButton = styled.button`
-  background: #CC6237;
-  color: #fff;
+interface NavButtonProps {
+  variant?: 'default' | 'previous';
+}
+
+const NavButton = styled.button<NavButtonProps>`
+  background: ${({ variant }) => (variant === 'previous' ? '#F5F5F5' : '#CC6237')};
+  color: ${({ variant }) => (variant === 'previous' ? '#000000' : '#fff')};
   border: none;
   padding: 0.5rem 0.75rem;
   border-radius: 20px;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 const PageNumber = styled.button<ActiveProps>`
   background: ${({ active }) => (active ? '#CC6237' : '#eee')};
   color: ${({ active }) => (active ? '#fff' : '#000')};
   border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
+  transition: background-color 0.3s;
+
+  &:hover {
+    background: ${({ active }) => (active ? '#b25529' : '#ddd')};
+  }
 `;
 
 const SearchInputWrapper = styled.div`
@@ -411,8 +484,7 @@ const SearchInputWrapper = styled.div`
   align-items: center;
   gap: 0.5rem;
   background: #f6f6f6;
-  border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 30px;
   padding: 0.4rem 1rem;
   width: 300px; /* largura mínima garantida */
 
@@ -428,8 +500,29 @@ const SearchInputWrapper = styled.div`
     font-family: 'Roboto', sans-serif;
     background: transparent;
     flex: 1;
-    min-width: 0; /* previne bug de largura em flex */
+    min-width: 0;
     color: #333;
   }
 `;
 
+const Dot = styled.span`
+  width: 3.33px;
+  height: 3.33px;
+  background-color: #cc6237;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+`;
+
+const DotsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+`;
+const DotsCell = styled.td`
+  width: 24px;
+  padding: 0;
+  text-align: center;
+`;

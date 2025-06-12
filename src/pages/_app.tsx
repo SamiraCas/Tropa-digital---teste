@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { AuthProvider } from '../contexts/AuthContext';
@@ -15,7 +16,13 @@ const GlobalStyle = createGlobalStyle`
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <GlobalStyle /> {/* 👈 Aqui você está aplicando os estilos globais */}
+      <Head>
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto&display=swap" 
+          rel="stylesheet" 
+        />
+      </Head>
+      <GlobalStyle /> {/* estilos globais */}
       <Component {...pageProps} />
     </AuthProvider>
   );
