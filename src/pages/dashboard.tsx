@@ -163,13 +163,6 @@ export default function Dashboard() {
       </SearchWrapper>
     </Header>
 
-  <MobileTableHeader>
-    <span>Nome do evento</span>
-    <span>Total de equipes</span>
-    <span>Status</span>
-    <span>Data</span>
-  </MobileTableHeader>
-
   <Table>
     <thead>
       <tr>
