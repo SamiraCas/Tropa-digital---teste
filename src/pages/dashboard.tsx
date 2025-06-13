@@ -618,19 +618,4 @@ const DotsCell = styled.td`
     margin-top: 8px;
   }
 `;
-const MobileTableHeader = styled.div`
-  display: none;
-  width: 100%;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  color: #CC6237;
-  margin-bottom: 0.5rem;
-  padding: 0 1rem;
-
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-  }
-`;
 
