@@ -176,9 +176,9 @@ export default function Dashboard() {
   {filteredEvents.length > 0 ? (
     filteredEvents.map((event, index) => (
       <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
-        <td>{event.nome}</td>
-        <td>{event.totalEquipes}</td>
-        <td>
+        <td data-label="Nome do evento">{event.nome}</td>
+        <td data-label="Total de equipes">{event.totalEquipes}</td>
+        <td data-label="Status">
           <StatusDot
             style={{
               backgroundColor:
@@ -187,8 +187,8 @@ export default function Dashboard() {
           />{' '}
           {event.status}
         </td>
-        <td>{event.data}</td>
-        <DotsCell>
+        <td data-label="Data">{event.data}</td>
+        <DotsCell data-label="Opções">
           <DotsContainer>
             <Dot />
             <Dot />
@@ -205,7 +205,6 @@ export default function Dashboard() {
     </tr>
   )}
 </tbody>
-
     </Table>
   <Pagination>
   <NavButton variant="previous">Anterior</NavButton>
@@ -422,6 +421,16 @@ const SearchWrapper = styled.div`
       height: 16px;
     }
   }
+    @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+  }
 `;
 
 const Table = styled.table`
@@ -432,7 +441,7 @@ const Table = styled.table`
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #eee;
-    font-family: 'Poppins', sans-serif; /* 👈 Aqui aplica a Poppins */
+    font-family: 'Poppins', sans-serif; 
     font-weight: 600;
     color: #333;
     font-weight: 500;
@@ -448,6 +457,49 @@ const Table = styled.table`
     font-size: 13px;
     color: #657593;
   }
+
+  @media (max-width: 768px) {
+    thead {
+      display: none;
+    }
+
+    tbody, tr, td {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      background: #fff;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: none;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+      position: relative;
+    }
+
+    td:last-child {
+      border-bottom: none;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #CC623780;
+      text-transform: uppercase;
+      font-size: 12px;
+      flex-basis: 40%;
+      flex-shrink: 0;
+    }
+  }
 `;
 
 const StatusDot = styled.span`
@@ -457,6 +509,11 @@ const StatusDot = styled.span`
   border-radius: 50%;
   background-color: #4DEF00;
   margin-right: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 12px;
+    height: 12px;
+  }
 `;
 
 const Pagination = styled.div`
@@ -535,6 +592,11 @@ const Dot = styled.span`
   border-radius: 50%;
   display: block;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    width: 8px;
+    height: 8px;
+  }
 `;
 
 const DotsContainer = styled.div`
@@ -548,4 +610,10 @@ const DotsCell = styled.td`
   width: 24px;
   padding: 0;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+    margin-top: 8px;
+  }
 `;
+
