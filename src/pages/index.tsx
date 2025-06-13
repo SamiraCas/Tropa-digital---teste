@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; // useRouter em Next 13 app directory vem de next/navigation
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -74,6 +74,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
+                autoComplete="email"
               />
             </InputGroup>
 
@@ -87,6 +88,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
+                  autoComplete="current-password"
                 />
                 <EyeIconButton
                   type="button"
@@ -115,10 +117,11 @@ export default function LoginPage() {
             <ImageWrapper>
               <Image
                 src="/imagens/monitoring 1.svg"
-  alt="Ilustração"
-  width={500}
-  height={356}  // ajuste conforme a proporção da sua imagem
-  style={{ objectFit: 'contain' }}
+                alt="Ilustração"
+                width={500}
+                height={356}
+                style={{ objectFit: 'contain' }}
+                priority
               />
             </ImageWrapper>
           </RightContent>
@@ -170,11 +173,11 @@ const RightContent = styled.div`
   flex: 1;
   background: #cc5a2e;
   display: flex;
-  align-items: flex-end;    /* alinha no final (parte de baixo) */
+  align-items: flex-end;
   justify-content: center;
   position: relative;
   margin: 10px;
-  border-radius: 10px; 
+  border-radius: 10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -186,7 +189,7 @@ const ImageWrapper = styled.div`
   max-width: 357px;
   margin-bottom: -4px;
   padding: 0;
-  transform: translateX(-115px); 
+  transform: translateX(-115px);
 `;
 
 const LogoWrapper = styled.div`
@@ -277,6 +280,7 @@ const PrimaryButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   margin-top: 16px;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #b14e28;
