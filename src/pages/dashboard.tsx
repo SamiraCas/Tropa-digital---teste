@@ -173,40 +173,38 @@ export default function Dashboard() {
       </tr>
     </thead>
     <tbody>
-      {filteredEvents.length > 0 ? (
-        filteredEvents.map((event, index) => (
-          <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
-            <td>{event.nome}</td>
-            <td>{event.totalEquipes}</td>
-            <td>
-              <StatusDot
-                style={{
-                  backgroundColor:
-                    event.status.toLowerCase() === 'ativo'
-                      ? '#4DEF00'
-                      : '#FF6347',
-                }}
-              />{' '}
-              {event.status}
-            </td>
-            <td>{event.data}</td>
-            <DotsCell>
-              <DotsContainer>
-                <Dot />
-                <Dot />
-                <Dot />
-              </DotsContainer>
-            </DotsCell>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
-            Nenhum evento encontrado.
-          </td>
-        </tr>
-      )}
-    </tbody>
+  {filteredEvents.length > 0 ? (
+    filteredEvents.map((event, index) => (
+      <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
+        <td data-label="Nome do evento">{event.nome}</td>
+        <td data-label="Total de equipes">{event.totalEquipes}</td>
+        <td data-label="Status">
+          <StatusDot
+            style={{
+              backgroundColor:
+                event.status.toLowerCase() === 'ativo' ? '#4DEF00' : '#FF6347',
+            }}
+          />{' '}
+          {event.status}
+        </td>
+        <td data-label="Data">{event.data}</td>
+        <DotsCell data-label="Ações">
+          <DotsContainer>
+            <Dot />
+            <Dot />
+            <Dot />
+          </DotsContainer>
+        </DotsCell>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+        Nenhum evento encontrado.
+      </td>
+    </tr>
+  )}
+</tbody>
   </Table>
   <Pagination>
   <NavButton variant="previous">Anterior</NavButton>
@@ -439,16 +437,15 @@ const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-    th {
+  th {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #eee;
     font-family: 'Poppins', sans-serif; 
     font-weight: 600;
     color: #333;
-    font-weight: 500;
-  font-size: 13px;
-  color: #CC623780;
+    font-size: 13px;
+    color: #CC623780;
   }
 
   td {
@@ -462,7 +459,10 @@ const Table = styled.table`
 
   @media (max-width: 768px) {
     thead {
-      display: none;
+      display: none !important;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
     }
 
     tbody, tr, td {
