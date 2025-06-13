@@ -114,10 +114,11 @@ export default function LoginPage() {
           <RightContent>
             <ImageWrapper>
               <Image
-                src="/imagens/monitoring 1.png"
-                alt="Ilustração"
-                fill
-                style={{ objectFit: 'contain' }}
+                src="/imagens/monitoring 1.svg"
+  alt="Ilustração"
+  width={500}
+  height={356}  // ajuste conforme a proporção da sua imagem
+  style={{ objectFit: 'contain' }}
               />
             </ImageWrapper>
           </RightContent>
@@ -169,9 +170,11 @@ const RightContent = styled.div`
   flex: 1;
   background: #cc5a2e;
   display: flex;
-  align-items: center;
+  align-items: flex-end;    /* alinha no final (parte de baixo) */
   justify-content: center;
   position: relative;
+  margin: 10px;
+  border-radius: 10px; 
 
   @media (max-width: 768px) {
     display: none;
@@ -180,9 +183,10 @@ const RightContent = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
-  width: 100%;
-  height: 100%;
   max-width: 357px;
+  margin-bottom: -4px;
+  padding: 0;
+  transform: translateX(-115px); 
 `;
 
 const LogoWrapper = styled.div`
