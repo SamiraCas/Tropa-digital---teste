@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-
+import { useIsMobile } from "@/hooks/useIsMobile";
 interface ActiveProps {
   active?: boolean;
 }
@@ -25,7 +25,7 @@ useEffect(() => {
 
   const router = useRouter();
   
-  
+  const isMobile = () => window.innerWidth <= 768;
 
   // Lista original de eventos
   const [events] = useState<Event[]>([
@@ -65,64 +65,95 @@ useEffect(() => {
 
   return (
     <Wrapper>
-      <Sidebar open={sidebarOpen}>
-        <TopSection>
-          <Logo
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            title={sidebarOpen ? 'Fechar menu' : 'Abrir menu'}
-            open={sidebarOpen}
+      <Sidebar
+  open={sidebarOpen}
+  onClick={() => {
+    if (isMobile() && !sidebarOpen) {
+  setSidebarOpen(true);
+}
+  }}
+>
+  <TopSection>
+    <Logo
+      onClick={(e) => {
+        e.stopPropagation(); // impede que o clique no botão propague para o Sidebar
+        setSidebarOpen(!sidebarOpen);
+      }}
+      title={sidebarOpen ? 'Fechar menu' : 'Abrir menu'}
+      open={sidebarOpen}
+    >
+      <img src="/imagens/Clip path group.png" alt="Logo" />
+    </Logo>
+
+    <Menu>
+      {menuItems.map((item, index) => (
+  <MenuItem
+    key={index}
+    open={sidebarOpen}
+    active={item.active}
+    onClick={() => {
+      // Aqui você pode adicionar navegação ou lógica personalizada
+      if (window.innerWidth <= 768) {
+        setSidebarOpen(false); // Fecha o menu no mobile
+      }
+    }}
+  >
+    <IconImg src={item.icon} alt={item.label} />
+    <span>{item.label}</span>
+  </MenuItem>
+))}
+
+    </Menu>
+  </TopSection>
+
+  <UserInfo open={sidebarOpen}>
+    <img src="/imagens/Frame 43.png" alt="Kaique Steck" />
+    {sidebarOpen && (
+      <UserContent>
+        <UserDetails>
+          <strong>Kaique Steck</strong>
+          <span>Administrador</span>
+        </UserDetails>
+
+        <UserLinks>
+          <a href="#" style={{ color: '#252525' }}>
+            <IconImg
+              src="/icons/dados.svg"
+              alt="Alterar dados"
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '0.4rem',
+                verticalAlign: 'middle',
+              }}
+            />
+            Alterar dados
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push('/');
+            }}
+            style={{ color: '#252525' }}
           >
-            <img src="/imagens/Clip path group.png" alt="Logo" />
-          </Logo>
-
-          <Menu>
-            {menuItems.map((item, index) => (
-              <MenuItem key={index} open={sidebarOpen} active={item.active}>
-                <IconImg src={item.icon} alt={item.label} />
-                <span>{item.label}</span>
-              </MenuItem>
-            ))}
-          </Menu>
-        </TopSection>
-
-        <UserInfo open={sidebarOpen}>
-          <img src="/imagens/Frame 43.png" alt="Kaique Steck" />
-          {sidebarOpen && (
-            <UserContent>
-              <UserDetails>
-                <strong>Kaique Steck</strong>
-                <span>Administrador</span>
-              </UserDetails>
-
-              <UserLinks>
-                <a href="#" style={{ color: '#252525' }}>
-                  <IconImg
-                    src="/icons/dados.svg"
-                    alt="Alterar dados"
-                    style={{ width: '18px', height: '18px', marginRight: '0.4rem', verticalAlign: 'middle' }}
-                  />
-                  Alterar dados
-                </a>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/');
-                  }}
-                  style={{ color: '#252525' }}
-                >
-                  <IconImg
-                    src="/icons/logout.svg"
-                    alt="Sair"
-                    style={{ width: '16px', height: '16px', marginRight: '0.4rem', verticalAlign: 'middle' }}
-                  />
-                  Sair
-                </a>
-              </UserLinks>
-            </UserContent>
-          )}
-        </UserInfo>
-      </Sidebar>
+            <IconImg
+              src="/icons/logout.svg"
+              alt="Sair"
+              style={{
+                width: '16px',
+                height: '16px',
+                marginRight: '0.4rem',
+                verticalAlign: 'middle',
+              }}
+            />
+            Sair
+          </a>
+        </UserLinks>
+      </UserContent>
+    )}
+  </UserInfo>
+</Sidebar>
 
       <Main open={sidebarOpen}>
   {/* Título fora do retângulo */}
