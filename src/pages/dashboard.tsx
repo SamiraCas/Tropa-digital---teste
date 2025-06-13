@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -14,8 +14,17 @@ interface Event {
 }
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+const [sidebarOpen, setSidebarOpen] = useState(true);
+
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const isMobile = window.innerWidth < 768;
+    setSidebarOpen(!isMobile); // Abre no desktop, fecha no mobile
+  }
+}, []);
+
   const router = useRouter();
+  
   
 
   // Lista original de eventos
