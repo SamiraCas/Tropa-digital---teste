@@ -163,49 +163,58 @@ export default function Dashboard() {
       </SearchWrapper>
     </Header>
 
-    <Table>
-      <thead>
-        <tr>
-          <th>Nome do evento</th>
-          <th>Total de equipes</th>
-          <th>Status</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-  {filteredEvents.length > 0 ? (
-    filteredEvents.map((event, index) => (
-      <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
-        <td data-label="Nome do evento">{event.nome}</td>
-        <td data-label="Total de equipes">{event.totalEquipes}</td>
-        <td data-label="Status">
-          <StatusDot
-            style={{
-              backgroundColor:
-                event.status.toLowerCase() === 'ativo' ? '#4DEF00' : '#FF6347',
-            }}
-          />{' '}
-          {event.status}
-        </td>
-        <td data-label="Data">{event.data}</td>
-        <DotsCell data-label="Opções">
-          <DotsContainer>
-            <Dot />
-            <Dot />
-            <Dot />
-          </DotsContainer>
-        </DotsCell>
+  <MobileTableHeader>
+    <span>Nome do evento</span>
+    <span>Total de equipes</span>
+    <span>Status</span>
+    <span>Data</span>
+  </MobileTableHeader>
+
+  <Table>
+    <thead>
+      <tr>
+        <th>Nome do evento</th>
+        <th>Total de equipes</th>
+        <th>Status</th>
+        <th>Data</th>
       </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
-        Nenhum evento encontrado.
-      </td>
-    </tr>
-  )}
-</tbody>
-    </Table>
+    </thead>
+    <tbody>
+      {filteredEvents.length > 0 ? (
+        filteredEvents.map((event, index) => (
+          <tr key={index} style={{ borderBottom: '1px solid #CC6237' }}>
+            <td>{event.nome}</td>
+            <td>{event.totalEquipes}</td>
+            <td>
+              <StatusDot
+                style={{
+                  backgroundColor:
+                    event.status.toLowerCase() === 'ativo'
+                      ? '#4DEF00'
+                      : '#FF6347',
+                }}
+              />{' '}
+              {event.status}
+            </td>
+            <td>{event.data}</td>
+            <DotsCell>
+              <DotsContainer>
+                <Dot />
+                <Dot />
+                <Dot />
+              </DotsContainer>
+            </DotsCell>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+            Nenhum evento encontrado.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </Table>
   <Pagination>
   <NavButton variant="previous">Anterior</NavButton>
   <PageNumber active={true}>1</PageNumber>
@@ -377,7 +386,7 @@ const Main = styled.main<MainProps>`
   
 
   @media (max-width: 768px) {
-    margin-left: ${({ open }) => (open ? '260px' : '68px')};
+    margin-left: ${({ open }) => (open ? '260px' : '38px')};
   }
 `;
 const Header = styled.div`
@@ -614,6 +623,21 @@ const DotsCell = styled.td`
   @media (max-width: 768px) {
     padding-right: 0;
     margin-top: 8px;
+  }
+`;
+const MobileTableHeader = styled.div`
+  display: none;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #CC6237;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
